@@ -1,6 +1,6 @@
 var util = require('../helper/util.js');
 
-exports.test = function(req, res){
+exports.test = function(req, res) {
     res.send("Hola testeo");
 }
 
@@ -13,7 +13,6 @@ exports.signup = function(req, res) {
         password: input.password,
         name: input.name,
         lastname: input.lastname,
-        module: input.module,
         date_signup: new Date(),
         rol: 'admin',
         state: 'active'
@@ -36,7 +35,29 @@ exports.signup = function(req, res) {
                                 return res.status(503).send({ message: 'Error de conexion con la base de datos', state: "error" });
                             } else {
                                 user.id = result.insertId;
-                                return res.status(200).send({ message: user, state: "OK" });
+                                user.module = input.module;
+
+                                connection.query("SELECT module_id FROM module WHERE module_description = ?", [input.module],
+                                    function(err3, moduleId) {
+                                        if (err3) {
+                                            throw err3;
+                                            console.log("Error Consultando : %s ", err3);
+                                            return res.status(503).send({ message: 'Error de conexion con la base de datos', state: "error" });
+                                        } else {
+                                            if (moduleId[0] != undefined) {
+                                                return res.status(401).send({ message: 'Error al agregar el modulo', state: "error" });
+                                            } else {
+                                                connection.query("INSERT INTO user_module set ?", { user_id: user.id, module_id: moduleId[0].module_id }, function(err4, resultModule) {
+                                                    if (err4) {
+                                                        console.log("Error Consultando : %s ", err4);
+                                                        return res.status(503).send({ message: 'Error de conexion con la base de datos', state: "error" });
+                                                    } else {
+                                                        return res.status(200).send({ message: user, state: "OK" });
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
                             }
                         })
                     }
@@ -63,19 +84,28 @@ exports.logIn = function(req, res) {
                     if (resUser.length === 0) {
                         return res.status(401).send({ message: 'El usuario no existe', state: "error" });
                     } else {
-
                         if (resUser[0].state != 'active') {
                             return res.status(401).send({ message: 'La cuenta ha sido desactivada', state: "error" });
                         } else {
                             if (password == resUser[0].password) {
-                                var payload = {
-                                    name: resUser[0].name,
-                                    email: resUser[0].email,
-                                    rol: resUser[0].rol,
-                                    module: resUser[0].module
-                                };
-                                return res.status(200).send({ token: util.generateToken(payload), state: "OK" });
-
+                                connection.query("SELECT module.module_description FROM user_module\n" +
+                                    "INNER JOIN module ON user_module.module_id = module.module_id\n" +
+                                    "WHERE user_module.user_id = ?", [resUser[0].id],
+                                    function(err3, resModule) {
+                                        if (err3) {
+                                            throw err3;
+                                            console.log("Error Consultando : %s ", err3);
+                                            return res.status(503).send({ message: 'Error de conexion con la base de datos', state: "error" });
+                                        } else {
+                                            var payload = {
+                                                name: resUser[0].name,
+                                                email: resUser[0].email,
+                                                rol: resUser[0].rol,
+                                                module: resModule[0].module_description
+                                            };
+                                            return res.status(200).send({ token: util.generateToken(payload), state: "OK" });
+                                        }
+                                    });
                             } else {
                                 return res.status(401).send({ message: 'Contraseña Incorrecta', state: "error" });
                             }
