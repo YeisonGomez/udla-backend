@@ -6,11 +6,10 @@ module.exports = {
 	},
 	
 	db : {
-		host 		: '104.236.225.92',
-		//host: 'localhost',
+		//host 		: '127.0.0.1',
+		host: 'localhost',
 	    user 		: 'root',
-	    password 	: '1117547625',
-	    //password 	: 'persian13',
+	    password 	: 'persian13',
 	    port 		: '3306', 
     	database 	: 'myapp'
     	//database: "udla"
