@@ -1,0 +1,39 @@
+<md-content layout-padding layout-margin>
+    <a href="" ng-click="reset()"  title="create" class="button-new font-h3" layout-margin>Agregar nuevo administrador</a>
+    <md-progress-linear ng-if="loadingContent" md-mode="indeterminate"></md-progress-linear>
+    <md-divider></md-divider>
+    <md-input-container class="margin-bot-10">
+        <label>Nombres</label>
+        <input ng-model="usr.name">
+    </md-input-container>
+    <md-input-container class="margin-bot-10">
+        <label>Apellidos</label>
+        <input ng-model="usr.lastname">
+    </md-input-container>
+    <br>
+    <md-input-container class="margin-bot-10">
+        <label>Correo electrónico</label>
+        <input type="email" ng-model="usr.email">
+    </md-input-container>
+    <md-input-container class="margin-bot-10">
+        <label>Contraseña</label>
+        <input type="password" ng-model="usr.password">
+    </md-input-container>
+    <br>
+    <md-input-container>
+        <label>Módulo</label>
+        <md-select ng-model="usr.module">
+            <md-option ng-repeat="m in modules" ng-value="m.key">{{m.name}}</md-option>
+        </md-select>
+    </md-input-container>
+    <br>
+    <br>
+    <div>
+        <a ng-if="!editUser" ng-click="create($event)" title="Guardar" class="round-button cursor-hand">
+            <i class="material-icons">save</i> Agregar
+        </a>
+        <a ng-if="editUser" ng-click="delete($event)" title="Eliminar" class="round-button cursor-hand">
+            <i class="material-icons">delete</i> Eliminar
+        </a>
+    </div>
+</md-content>

@@ -1,0 +1,24 @@
+<md-content flex layout-padding class="cover-login size-sidenav" ng-cloak>
+    <div layout="column" layout-fill layout-align="top center">
+        <div class="contain-login">
+            <form class="white-alpha form-signin limit-login text-center">
+                <h2 class="text-thin center-text border-bottomgreen"><span>Inicia sesión</span></h2>
+                <div layout-gt-sm="row">
+                    <md-content class="md-no-momentum width-all">
+                        <md-input-container class="md-icon-float md-block">
+                            <label>Correo de acceso</label>
+                            <md-icon class="material-icons color-gray">person</md-icon>
+                            <input ng-model="username" type="text">
+                        </md-input-container>
+                        <md-input-container class="md-icon-float md-block">
+                            <label>Contraseña</label>
+                            <md-icon class="material-icons color-gray">lock</md-icon>
+                            <input ng-model="password" type="password">
+                        </md-input-container>
+                        <md-button class="md-raised md-primary width-all lowercase" style="width: 244px;" ng-click="login($event)" ng-disabled = "!credentialsValid()">Continuar</md-button>
+                    </md-content>
+                </div>
+            </form>
+        </div>
+    </div>
+</md-content>

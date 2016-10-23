@@ -1,0 +1,25 @@
+<md-content layout-padding layout-margin>
+    <md-input-container class="display-block margin-bot-10">
+        <label>Título</label>
+        <input ng-model="new.subject">
+    </md-input-container>
+    <md-input-container class="display-block margin-bot-10">
+        <label>Descripción del artículo</label>
+        <input ng-model="new.detail">
+    </md-input-container>
+    <a ng-if="edit" ng-click="delete($event)" title="Eliminar" class="round-button cursor-hand">
+        <i class="material-icons">delete</i> Eliminar
+    </a>
+    <a ng-disabled="loadingContent" ng-if="!edit" ng-click="create()" title="Guardar" class="round-button cursor-hand">
+        <i class="material-icons">save</i> Publicar
+    </a>
+
+    <a ng-disabled="loadingContent" ng-if="!edit" ng-click="upImg()" title="Guardar" class="round-button cursor-hand">
+        <i class="material-icons">crop_original</i> Subir imagen
+    </a>
+
+
+    <!-- ==============================Mini wordsito================================ -->
+    <md-progress-linear ng-if="loadingContent" md-mode="indeterminate"></md-progress-linear>
+    <div id="editor-container" layout-margin></div>
+</md-content>

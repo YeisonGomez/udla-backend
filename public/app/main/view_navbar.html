@@ -1,0 +1,23 @@
+<md-toolbar>
+    <div class="md-toolbar-tools">
+        <!--Icono menu responsive-->
+        <md-button href="/" class="lowercase font-navbar">UDLA APP Editores</md-button>
+        <span flex=""></span>
+        <section layout="row" layout-align="center center">
+            <md-menu>
+                <md-button ng-click="$mdOpenMenu($event)" aria-label="open_menu">
+                    <md-icon class="material-icons">account_circle</md-icon>
+                    <span>{{user.name}}</span>
+                </md-button>
+                <md-menu-content width="4">
+                    <md-menu-item>
+                        <md-button ng-click="logout()">
+                            <md-icon md-svg-src="/imgs/icons/ic_logout.svg" md-menu-align-target></md-icon>
+                            Cerrar Sesión
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </section>
+    </div>
+</md-toolbar>

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html ng-app="udla">
+<head>
+	<meta content="charset=utf-8" />
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+	<meta name="theme-color" content="#107f58">
+	<title>udla</title>
+
+<link rel="icon" type="image/png" href="/imgs/favicon.png" />
+<link rel="stylesheet" href="/lib/angular-material/angular-material.css">
+<link rel="stylesheet" href="/lib/quill/dist/quill.snow.css">
+<link rel="stylesheet" href="/css/style.css">
+
+<script src="lib/quill/dist/quill.js"></script>
+<script src="lib/angular/angular.min.js"></script>
+
+
+
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body ng-controller="appCtrl">
+	<div app-view-segment="0" ng-cloak class="background-gray" style="height:100%">
+	</div>
+
+</body>
+
+<script src="lib/angular-route/angular-route.min.js"></script>
+<script src="lib/angular-route-segment/build/angular-route-segment.js"></script>
+<script src="lib/angular-aria/angular-aria.js"></script>
+<script src="lib/angular-animate/angular-animate.js"></script>
+<script src="lib/angular-messages/angular-messages.min.js"></script>
+<script src="lib/angular-material/angular-material.js"></script>
+<script src="lib/satellizer/dist/satellizer.min.js"></script>
+
+<script src="app/app.js"></script>
+<script src="app/run.js"></script>
+<script src="app/directives/http-timeout.js"></script>
+
+<!--Controllers-->
+<script src="app/main/controller_main.js"></script>
+<script src="app/user/login/controller_login.js"></script>
+<script src="app/news/controller_news.js"></script>
+<script src="app/events/controller_events.js"></script>
+<script src="app/user/signIn/controller_signIn.js"></script>
+
+<!--Services-->
+<script src="app/main/service_main.js"></script>
+<script src="app/user/login/service_login.js"></script>
+<script src="app/news/service_news.js"></script>
+<script src="app/events/service_events.js"></script>
+<script src="app/user/signIn/service_signIn.js"></script>
+
+</html>

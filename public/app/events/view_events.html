@@ -1,0 +1,23 @@
+<md-content layout-padding layout-margin>
+    <md-input-container class="display-block title-events margin-bot-10">
+        <label>Título</label>
+        <input ng-model="user.title">
+    </md-input-container>
+    
+    <textarea name="eventsDescriptions" class="display-block text-events" placeholder="Descripción del evento"></textarea>
+    <input type="date" name="fecha">
+    <input type="time" name="hora" autocomplete="on">
+    <a ng-click="delete(1)" title="Eliminar" class="round-button cursor-hand">
+        <i class="material-icons">delete</i> Eliminar
+    </a>
+    <a ng-click="create()" title="Guardar" class="round-button cursor-hand">
+        <i class="material-icons">save</i> Publicar
+    </a>
+<br>
+    <md-button class="md-primary md-raised" ng-click="showAlert($event)">
+        mostrar error
+    </md-button>
+
+
+    </md-dialog>
+</md-content>

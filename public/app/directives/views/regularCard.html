@@ -1,0 +1,33 @@
+<md-card class="card-span">
+    <md-menu>
+        <a href="/" ng-click="$mdOpenMenu($event)" aria-label="open_menu" class="icon-option float-right">
+            <md-icon  class="material-icons">expand_more</md-icon>
+        </a>
+        <md-menu-content width="2">
+            <md-menu-item>
+                <md-button ng-href="/{{id}}/settings">
+                    <md-icon class="material_icons">settings_applications</md-icon>
+                    Configuración
+                </md-button>
+            </md-menu-item>
+            <md-menu-item>
+                <md-button href="/">
+                    <md-icon class="material_icons">highlight_off</md-icon>
+                    Eliminar
+                </md-button>
+            </md-menu-item>
+        </md-menu-content>
+    </md-menu>
+
+    <md-card-title>
+        <md-card-title-media>
+            <div class="md-media-sm card-media" layout layout-align="center center">
+                <md-icon class="icon-card" md-svg-src="/imgs/LogoUA.svg"></md-icon>
+            </div>
+        </md-card-title-media>
+        <md-card-title-text>
+            <a href="" class="inactive-style-link" ng-click="redirect()"><span class="md-headline">{{name}}</span></a>
+            <span class="md-subhead description">ID: {{id}}</span>
+        </md-card-title-text>
+    </md-card-title>
+</md-card>
