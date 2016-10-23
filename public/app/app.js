@@ -1,7 +1,7 @@
 'use strict';
 
-//var api_url = "http://104.236.225.92:3200";
-var api_url = "http://localhost:3200";
+var api_url = "http://104.236.225.92:3200";
+//var api_url = "http://localhost:3200";
 
 var app = angular.module('udla', ['ngRoute', 'route-segment', 'view-segment', 'ngMaterial', 'satellizer']);
 
