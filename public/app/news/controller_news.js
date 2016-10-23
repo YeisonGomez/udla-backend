@@ -8,7 +8,7 @@ app.controller('newsCtrl', function($scope, $rootScope, $location, $interval, ne
 
     $scope.create = function(ev) {
         $rootScope.new.content = JSON.stringify($scope.quill.getContents());
-console.log($rootScope.new.content);
+console.log($scope.quill.getContents());
         if (!$scope.loadingContent && $scope.validNew()) {
             $scope.loadingContent = true;
             newsService.create($rootScope.new).then(function(data) {
@@ -30,13 +30,13 @@ console.log($rootScope.new.content);
             if($rootScope.new.subject.length()<=50){
                 $scope.showAlert(ev, "Lo sentimos", "El título es demasiado largo para ser publicado.");
             }else{
-                $scope.showAlert(ev, "Lo sentimos", "El artículo es demasiado corto para ser publicado o no tiene contenido");
+                $scope.showAlert(ev, "Lo sentimos", "El articulo es demasiado corto para ser publicado o no tiene contenido");
             }
         }
     }
 
     $scope.delete = function(ev) {
-        $scope.showAlert(ev, "Confirmar", "¿Estas seguro de eliminar el artículo?", function() {
+        $scope.showAlert(ev, "Confirmar", "¿Estas seguro de eliminar el articulo?", function() {
             $scope.loadingContent = true;
             newsService.delete($rootScope.new.id, $rootScope.user.module).then(function(data) {
                     $scope.deleteList(data.data.message);
@@ -46,7 +46,7 @@ console.log($rootScope.new.content);
                 })
                 .catch(function(err) {
                     $scope.loadingContent = false;
-                    $scope.showAlert(ev, "Lo sentimos", "La conexión con el servidor falló");
+                    $scope.showAlert(ev, "Lo sentimos", "La conexión con el servidor fallo");
                     $rootScope.edit = false;
                 });
         });
@@ -56,5 +56,5 @@ console.log($rootScope.new.content);
     $scope.validNew = function() {
         return $rootScope.new.subject.length > 3 && $rootScope.new.detail.length > 4 && $rootScope.new.content.length > 5;
     }
-   
+    
   });
