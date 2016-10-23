@@ -13,6 +13,10 @@ exports.signup = function(req, res) {
         password: input.password,
         name: input.name,
         lastname: input.lastname,
+<<<<<<< HEAD
+=======
+        //module: input.module,
+>>>>>>> 8a6d51f5b44f2f6b630db6ac5d6ae36c68f8f56f
         date_signup: new Date(),
         rol: 'admin',
         state: 'active'
@@ -35,6 +39,7 @@ exports.signup = function(req, res) {
                                 return res.status(503).send({ message: 'Error de conexion con la base de datos', state: "error" });
                             } else {
                                 user.id = result.insertId;
+<<<<<<< HEAD
                                 user.module = input.module;
 
                                 connection.query("SELECT module_id FROM module WHERE module_description = ?", [input.module],
@@ -58,6 +63,20 @@ exports.signup = function(req, res) {
                                             }
                                         }
                                     });
+=======
+
+                                connection.query("SELECT module_id FROM module WHERE module_description = ?", [input.module],
+                                    function(err, moduleId) {
+                                        if (err) {
+                                            throw err;
+                                            console.log("Error Consultando : %s ", err);
+                                            return res.status(503).send({ message: 'Error de conexion con la base de datos', state: "error" });
+                                        } else {
+
+                                        }
+                                    });
+                                return res.status(200).send({ message: user, state: "OK" });
+>>>>>>> 8a6d51f5b44f2f6b630db6ac5d6ae36c68f8f56f
                             }
                         })
                     }
