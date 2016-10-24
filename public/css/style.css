@@ -36,6 +36,13 @@
     height: 300px;
 }
 
+.select-module{
+    background: #009688;
+    border: none;
+    color: white;
+    margin-top: 15px;
+}
+
 .round-button {
     border: none;
     color: #009688;
@@ -79,6 +86,23 @@
   width: 600px;
   height: 135px;
 }
+
+.list-module{
+    margin: 0 0 0 30px;
+    padding: 0;
+}
+
+.list-module i{
+    margin-left: 10px;
+    font-size: 16px;
+    opacity: 0.5;
+}
+.list-module i:hover{
+    opacity: 0.8;
+    color: red;
+
+}
+
 
 .cover-login {
     padding-top: 10%;

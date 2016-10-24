@@ -1,5 +1,5 @@
 <md-content layout-padding layout-margin>
-    <a href="" ng-click="reset()"  title="create" class="button-new font-h3" layout-margin>Agregar nuevo administrador</a>
+    <a href="" ng-click="reset()" title="create" class="button-new font-h3" layout-margin>Agregar nuevo administrador</a>
     <md-progress-linear ng-if="loadingContent" md-mode="indeterminate"></md-progress-linear>
     <md-divider></md-divider>
     <md-input-container class="margin-bot-10">
@@ -19,13 +19,28 @@
         <label>Contraseña</label>
         <input type="password" ng-model="usr.password">
     </md-input-container>
+    <a ng-if="editUser" href="" class="round-button cursor-hand" ng-click="setPassword($event, usr.id, usr.password)">Cambiar contraseña</a>
+    <br>
+
+    <h3 ng-if="editUser">Módulos</h3>
+    <div ng-if="editUser" class="list-module" ng-repeat="mod in usr.modules track by $index">
+        <section ng-if="mod != undefined">
+            <span>{{mod.detail}}</span>
+            <a href="" ng-click="deleteModule($event, usr.id, mod.mod, $index)"><i ng-if="$index != 0" class="material-icons">clear</i></a>
+        </section>
+    </div>
     <br>
     <md-input-container>
         <label>Módulo</label>
-        <md-select ng-model="usr.module">
+        <md-select ng-model="usr.module" aria-label="modul">
             <md-option ng-repeat="m in modules" ng-value="m.key">{{m.name}}</md-option>
         </md-select>
     </md-input-container>
+    
+    <!--Nuevo modulo-->
+    <a ng-if="editUser" ng-click="addModule($event, usr.id, usr.module)" title="Nuevo módulo" class="round-button cursor-hand">
+        <i class="material-icons">playlist_add</i> Agregar el módulo
+    </a>
     <br>
     <br>
     <div>

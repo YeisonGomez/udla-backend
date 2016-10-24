@@ -1,17 +1,12 @@
 <md-sidenav class="md-sidenav-left" md-component-id="left" md-is-locked-open="true" md-whiteframe="4" layout-fill>
     <md-toolbar class="md-theme-indigo">
-        <h1 class="md-toolbar-tools" ng-if="user.module == 'wellness'">Bienestar Universitario</h1>
-        <h1 class="md-toolbar-tools" ng-if="user.module == 'news'">Noticias Generales</h1>
-        <h1 class="md-toolbar-tools" ng-if="user.module == 'youth'">Extensión social</h1>
-        <h1 class="md-toolbar-tools" ng-if="user.module == 'education'">Educación continuada</h1>
-        <h1 class="md-toolbar-tools" ng-if="user.module == 'radio'">Radio</h1>
-        <h1 class="md-toolbar-tools" ng-if="user.module == 'event'">Eventos Generales</h1>
-        <h1 class="md-toolbar-tools" ng-if="user.module == 'agreement'">Convenios</h1>
-        <h1 class="md-toolbar-tools" ng-if="user.module == 'graduate'">Graduados</h1>
-
-        <h1 class="md-toolbar-tools" ng-if="user.module == 'admin'">Administrador</h1>
+        <select name="select" class="select-module" ng-model="user_module" ng-click="setModule(user_module)">
+            <option ng-repeat="mod in modulesList" value="{{mod.m}}">
+                {{mod.ms}}
+            </option> 
+        </select>
     </md-toolbar>
-    <md-content ng-if="user.module != 'admin'">
+    <md-content ng-if="user_module != 'admin'">
         <md-list class="md-dense" flex>
             <md-subheader class="md-no-sticky">Selecciona una noticia para editar
                 <br> O
@@ -30,23 +25,17 @@
             </section>
     </md-content>
 
-    <md-content ng-if="user.module == 'admin'">
+    <md-content ng-if="user_module == 'admin'">
         <md-list class="md-dense" flex>
             <md-progress-circular ng-if="loadingMenu" md-mode="indeterminate" md-diameter="70px"></md-progress-circular>
             <section ng-if="!loadingMenu" ng-repeat="us in users">
-                <md-list-item class="md-2-line" ng-if="us.module != 'admin'" ng-click="userDetail(us)">
+                <md-list-item class="md-2-line" ng-if="us.email != user.email" ng-click="userDetail(us)">
                     <img src="/imgs/LogoUA.svg" class="md-avatar"/>
                     <div class="md-list-item-text">
                         <h3>{{us.name}} {{us.lastname}}</h3>
-                        <p ng-if="us.module == 'news'">Noticias generales</p>
-                        <p ng-if="us.module == 'wellness'">Bienes universitario</p>
-                        <p ng-if="us.module == 'youth'">Extensión social</p>
-                        <p ng-if="us.module == 'radio'">Radio</p>
-                        <p ng-if="us.module == 'event'">Eventos generales</p>
-                        <p ng-if="us.module == 'education'">Educación continuada</p>
-                        <p ng-if="us.module == 'agreement'">Convenios</p>
-                        <p ng-if="us.module == 'graduate'">Graduados</p>
-
+                        <section ng-repeat="mod in us.modulesSee track by $index">
+                            <p ng-if="mod != undefined">{{mod.mod_spa}}</p>
+                        </section>
                     </div>
                 </md-list-item>
                 <md-divider></md-divider>

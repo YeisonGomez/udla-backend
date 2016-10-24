@@ -8,11 +8,14 @@ app.controller('newsCtrl', function($scope, $rootScope, $location, $interval, ne
 
     $scope.create = function(ev) {
         $rootScope.new.content = JSON.stringify($scope.quill.getContents());
-console.log($scope.quill.getContents());
         if (!$scope.loadingContent && $scope.validNew()) {
             $scope.loadingContent = true;
-            newsService.create($rootScope.new).then(function(data) {
-                    $scope.newsTotal.push(data.data.message);
+            newsService.create($rootScope.new, $rootScope.user_module).then(function(data) {
+                    if($scope.newsTotal == undefined){
+                        $scope.newsTotal = data.data.message;
+                    }else{
+                        $scope.newsTotal.push(data.data.message);
+                    }
                     $rootScope.new = {
                         subject: "",
                         detail: "",
@@ -38,7 +41,7 @@ console.log($scope.quill.getContents());
     $scope.delete = function(ev) {
         $scope.showAlert(ev, "Confirmar", "¿Estas seguro de eliminar el articulo?", function() {
             $scope.loadingContent = true;
-            newsService.delete($rootScope.new.id, $rootScope.user.module).then(function(data) {
+            newsService.delete($rootScope.new.id, $rootScope.user_module).then(function(data) {
                     $scope.deleteList(data.data.message);
                     $scope.articleNew();
                     $scope.loadingContent = false;

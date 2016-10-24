@@ -20,23 +20,36 @@ exports.authenticateAdmin = function(req, res, next) {
 
         if (payload.rol == "admin" || payload.rol == "superadmin") {
             req.getConnection(function(err, connection) {
-                var query = connection.query("SELECT *\n" +
+                var query = connection.query("SELECT\n" +
+                    "`user`.id,\n" +
+                    "`user`.email,\n" +
+                    "`user`.`password`,\n" +
+                    "`user`.`name`,\n" +
+                    "`user`.lastname,\n" +
+                    "`user`.rol,\n" +
+                    "`user`.date_signup,\n" +
+                    "`user`.state,\n" +
+                    "GROUP_CONCAT(module.module_description) as module\n" +
                     "FROM\n" +
-                    "user\n" +
+                    "`user`\n" +
+                    "INNER JOIN user_module ON user_module.user_id = `user`.id\n" +
+                    "INNER JOIN module ON user_module.module_id = module.module_id\n" +
                     "WHERE\n" +
-                    "user.email = ?", [payload.email],
+                    "`user`.email = ?\n" +
+                    "GROUP BY\n" +
+                    "`user`.id", [payload.email],
                     function(err, resUser) {
                         if (err) {
                             throw err;
                             console.log("Error Consultando : %s ", err);
                             return res.status(401);
                         } else {
-                            if(resUser[0].state != 'active'){
+                            if (resUser[0].state != 'active') {
                                 return res.status(403).send({ message: "Usuario no autorizado", state: "error" })
-                            }else{
+                            } else {
                                 req.user_id = resUser[0].id;
-                                req.user_module = resUser[0].module;
                                 req.user_rol = resUser[0].rol;
+                                req.user_module = resUser[0].module;
                                 next();
                             }
 

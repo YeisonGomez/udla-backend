@@ -1,10 +1,10 @@
 exports.create = function(req, res) {
     var news = {
         user_id: req.user_id,
-        subject: req.body.subject,
-        detail: req.body.detail,
-        content: req.body.content,
-        module: req.user_module,
+        subject: req.body.n.subject,
+        detail: req.body.n.detail,
+        content: req.body.n.content,
+        module: req.body.m,
         img: "",
         date_edit: new Date()
     };
@@ -63,7 +63,7 @@ exports.getAll = function(req, res) {
 exports.getAllMe = function(req, res) {
     req.getConnection(function(err, connection) {
         var query = connection.query(
-            "SELECT * FROM news WHERE user_id = ? AND module = ?", [req.user_id, req.user_module],
+            "SELECT * FROM news WHERE user_id = ? AND module = ?", [req.user_id, req.body.module],
             function(err, resUser) {
                 if (err) {
                     throw err;
@@ -78,20 +78,17 @@ exports.getAllMe = function(req, res) {
 
 exports.delete = function(req, res) {
     var id = req.params.id;
-    if (req.params.module == req.user_module) {
-        req.getConnection(function(err, connection) {
-            var query = connection.query("DELETE FROM news WHERE id = ?", id,
-                function(err, resD) {
-                    if (err) {
-                        throw err;
-                        console.log("Error Consultando : %s ", err);
-                        res.status(503).send({ message: 'Error de conexion con la base de datos', state: "error" });
-                    } else {
-                        res.status(200).send({ message: id, state: "OK" });
-                    }
-                });
-        });
-    } else {
-        res.status(400).send({ message: 'Acceso Denegado', state: "error" });
-    }
+
+    req.getConnection(function(err, connection) {
+        var query = connection.query("DELETE FROM news WHERE id = ?", id,
+            function(err, resD) {
+                if (err) {
+                    throw err;
+                    console.log("Error Consultando : %s ", err);
+                    res.status(503).send({ message: 'Error de conexion con la base de datos', state: "error" });
+                } else {
+                    res.status(200).send({ message: id, state: "OK" });
+                }
+            });
+    });
 }

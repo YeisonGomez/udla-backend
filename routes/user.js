@@ -44,7 +44,7 @@ exports.signup = function(req, res) {
                                             console.log("Error Consultando : %s ", err3);
                                             return res.status(503).send({ message: 'Error de conexion con la base de datos', state: "error" });
                                         } else {
-                                            if (moduleId[0] != undefined) {
+                                            if (moduleId[0] == undefined) {
                                                 return res.status(401).send({ message: 'Error al agregar el modulo', state: "error" });
                                             } else {
                                                 connection.query("INSERT INTO user_module set ?", { user_id: user.id, module_id: moduleId[0].module_id }, function(err4, resultModule) {
@@ -88,7 +88,9 @@ exports.logIn = function(req, res) {
                             return res.status(401).send({ message: 'La cuenta ha sido desactivada', state: "error" });
                         } else {
                             if (password == resUser[0].password) {
-                                connection.query("SELECT module.module_description FROM user_module\n" +
+                                connection.query("SELECT\n" +
+                                    "GROUP_CONCAT(module.module_description) AS module_description, \n" +
+                                    "GROUP_CONCAT(module.module_spanish) AS module_spanish FROM user_module\n" +
                                     "INNER JOIN module ON user_module.module_id = module.module_id\n" +
                                     "WHERE user_module.user_id = ?", [resUser[0].id],
                                     function(err3, resModule) {
@@ -97,11 +99,13 @@ exports.logIn = function(req, res) {
                                             console.log("Error Consultando : %s ", err3);
                                             return res.status(503).send({ message: 'Error de conexion con la base de datos', state: "error" });
                                         } else {
+                                            console.log(resModule[0]);
                                             var payload = {
                                                 name: resUser[0].name,
                                                 email: resUser[0].email,
                                                 rol: resUser[0].rol,
-                                                module: resModule[0].module_description
+                                                module: resModule[0].module_description,
+                                                module_detail: resModule[0].module_spanish
                                             };
                                             return res.status(200).send({ token: util.generateToken(payload), state: "OK" });
                                         }
@@ -120,7 +124,22 @@ exports.logIn = function(req, res) {
 exports.getAll = function(req, res) {
     req.getConnection(function(err, connection) {
         var query = connection.query(
-            "SELECT id, email, name, lastname, module, date_signup FROM user WHERE state = 'active'",
+            "SELECT\n" +
+            "`user`.id,\n" +
+            "`user`.email,\n" +
+            "`user`.`name`,\n" +
+            "`user`.lastname,\n" +
+            "`user`.date_signup,\n" +
+            "GROUP_CONCAT(module.module_description) as module,\n" +
+            "GROUP_CONCAT(module.module_spanish) AS module_spanish\n" +
+            "FROM\n" +
+            "`user`\n" +
+            "INNER JOIN user_module ON user_module.user_id = `user`.id\n" +
+            "INNER JOIN module ON user_module.module_id = module.module_id\n" +
+            "WHERE\n" +
+            "`user`.state = 'active'\n" +
+            "GROUP BY\n" +
+            "`user`.id",
             function(err, resUser) {
                 if (err) {
                     throw err;
@@ -145,6 +164,73 @@ exports.delete = function(req, res) {
                     return res.status(503).send({ message: 'Error de conexion con la base de datos', state: "error" });
                 } else {
                     return res.status(200).send({ message: id, state: "OK" });
+                }
+            });
+    });
+}
+
+exports.deleteModule = function(req, res) {
+    req.getConnection(function(err, connection) {
+        connection.query("SELECT * FROM module WHERE module.module_description = ?", req.params.module,
+            function(err, resModule) {
+                if (err) {
+                    throw err;
+                    console.log("Error Consultando : %s ", err);
+                    return res.status(503).send({ message: 'Error de conexion con la base de datos', state: "error" });
+                } else {
+                    connection.query(
+                        "DELETE FROM user_module\n" +
+                        "WHERE user_module.module_id = ? AND user_module.user_id = ?", [resModule[0].module_id, req.params.id],
+                        function(err2, res2) {
+                            if (err2) {
+                                throw err2;
+                                console.log("Error Consultando : %s ", err2);
+                                return res.status(503).send({ message: 'Error de conexion con la base de datos', state: "error" });
+                            } else {
+                                return res.status(200).send({ message: "OK", state: "OK" });
+                            }
+                        });
+                }
+            });
+    });
+}
+
+exports.addModule = function(req, res) {
+    req.getConnection(function(err, connection) {
+        connection.query("SELECT * FROM module WHERE module.module_description = ?", req.body.mod,
+            function(err, resModule) {
+                if (err) {
+                    throw err;
+                    console.log("Error Consultando : %s ", err);
+                    return res.status(503).send({ message: 'Error de conexion con la base de datos', state: "error" });
+                } else {
+                    connection.query(
+                        "INSERT INTO user_module set ?", { user_id: req.body.id, module_id: resModule[0].module_id },
+                        function(err2, res2) {
+                            if (err2) {
+                                throw err2;
+                                console.log("Error Consultando : %s ", err2);
+                                return res.status(503).send({ message: 'Error de conexion con la base de datos', state: "error" });
+                            } else {
+                                return res.status(200).send({ message: resModule[0].module_spanish, state: "OK" });
+                            }
+                        });
+                }
+            });
+    });
+}
+
+exports.setPassword = function(req, res) {
+    req.getConnection(function(err, connection) {
+        connection.query(
+            "UPDATE user SET password = ? WHERE id = ?", [req.body.pass, req.body.id],
+            function(err2, res2) {
+                if (err2) {
+                    throw err2;
+                    console.log("Error Consultando : %s ", err2);
+                    return res.status(503).send({ message: 'Error de conexion con la base de datos', state: "error" });
+                } else {
+                    return res.status(200).send({ message: "OK", state: "OK" });
                 }
             });
     });

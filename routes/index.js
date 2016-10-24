@@ -12,6 +12,9 @@ router.post('/login', route.user.logIn);
 router.post('/sign-up', route.user.signup);
 router.get('/user/get-users', auth.authenticateAdmin, route.user.getAll);
 router.delete('/user/delete/:id', auth.authenticateAdmin, route.user.delete);
+router.delete('/user/delete-module/:id/:module', auth.authenticateAdmin, route.user.deleteModule);
+router.post('/user/add-module', auth.authenticateAdmin, route.user.addModule);
+router.post('/user/set-password', auth.authenticateAdmin, route.user.setPassword);
 
 router.post('/new/create', auth.authenticateAdmin, route.new.create);
 router.post('/new/get-all-me', auth.authenticateAdmin, route.new.getAllMe);

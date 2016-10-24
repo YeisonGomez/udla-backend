@@ -17,7 +17,8 @@ app.controller('loginCtrl', function($scope, $rootScope, loginService, $auth, $l
                         $scope.username = "";
                         $scope.password = "";
                         localStorage.setItem("token", data.data.token);
-                        $rootScope.user = $auth.getPayload()
+                        $rootScope.user = $auth.getPayload();
+                        $rootScope.user_module = $auth.getPayload().module.split(",")[0];
                         if($rootScope.user.module == "news" || $rootScope.user.module == "wellness" || $rootScope.user.module == "youth"){
                             $location.path("#/news");
                         }else{

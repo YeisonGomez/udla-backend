@@ -5,7 +5,8 @@ exports.generateToken = function(user){
     name: user.name,
     email: user.email,
     rol: user.rol,
-    module: user.module
+    module: user.module,
+    module_detail: user.module_detail
   }
   return (jwt.encode(payload, 'undlaz'));
 };
