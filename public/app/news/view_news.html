@@ -13,13 +13,18 @@
     <a ng-disabled="loadingContent" ng-if="!edit" ng-click="create()" title="Guardar" class="round-button cursor-hand">
         <i class="material-icons">save</i> Publicar
     </a>
-
-    <!--<a ng-disabled="loadingContent" ng-if="!edit" ng-click="" title="Guardar" class="round-button cursor-hand">
+    <a ng-if="edit" ng-click="update($event)" title="Guardar" class="round-button cursor-hand">
         <i class="material-icons">mode_edit</i> Editar artículo
-    </a>-->
-
-
-    <!-- ==============================Mini wordsito================================ -->
+    </a>
+    <form name="form" ng-show="!edit">
+        <a class="round-button cursor-hand">
+            <div class="button" ngf-select ng-model="file" name="file" ngf-pattern="'image/*'" ngf-accept="'image/*'" ngf-max-size="80MB" ngf-min-height="50" ngf-resize="{width: 400, height: 400}"><i class="material-icons">insert_photo</i> Imagen de portada</div>
+        </a>
+    </form>
+    <br>
+    <img ng-if="!edit" ngf-src="file" class="preview" ng-show="file.type.indexOf('image') > -1" width="100" height="100"/>
+    <img ng-if="edit" ng-src="{{new.view_img}}" alt="" width="100" height="100">
     <md-progress-linear ng-if="loadingContent" md-mode="indeterminate"></md-progress-linear>
+    <!-- ==============================Mini wordsito================================ -->
     <div id="editor-container" layout-margin></div>
 </md-content>

@@ -54,10 +54,15 @@ app.controller('mainCtrl', function($rootScope, $scope, $location, newsService, 
 
     $scope.setModule = function(mod) {
         if (mod != $rootScope.user_module) {
+            var copy = $rootScope.user_module;
             $rootScope.user_module = mod;
             if (mod == "admin") {
                 $routeSegment.chain[0].reload();
             }else{
+                if(copy == "admin"){
+                    $routeSegment.chain[0].reload();
+                    $routeSegment.chain[1].reload();
+                }   
                 see_notice_me();
             }
         }
@@ -80,7 +85,9 @@ app.controller('mainCtrl', function($rootScope, $scope, $location, newsService, 
         $rootScope.new = {
             subject: "",
             detail: "",
-            content: ""
+            content: "",
+            view_img: "",
+            img: ""
         };
         $scope.erase();
     }
@@ -100,11 +107,7 @@ app.controller('mainCtrl', function($rootScope, $scope, $location, newsService, 
             modules: {
                 toolbar: [
                     ['bold', 'italic'],
-                    [{ 'align': [] }],
-                    [{ 'header': 1 }, { 'header': 2 }],
-                    [{ 'size': ['small', false, 'large', 'huge'] }], // custom dropdown
-                    ['link', 'blockquote', 'code-block', 'image', 'header'],
-                    [{ list: 'ordered' }, { list: 'bullet' }]
+                    ['link', 'header'],
                 ]
             },
             placeholder: 'Contenido del artículo...',

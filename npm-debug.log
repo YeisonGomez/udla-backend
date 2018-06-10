@@ -8,7 +8,7 @@
 7 silly lifecycle udla-backend@0.0.0~prestart: no script for prestart, continuing
 8 info lifecycle udla-backend@0.0.0~start: udla-backend@0.0.0
 9 verbose lifecycle udla-backend@0.0.0~start: unsafe-perm in lifecycle true
-10 verbose lifecycle udla-backend@0.0.0~start: PATH: /usr/local/lib/node_modules/npm/bin/node-gyp-bin:/home/yeison/Dropbox/JavaScript/Proyectos/udla/udla-admin/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/yeison/android-sdk-linux//bin
+10 verbose lifecycle udla-backend@0.0.0~start: PATH: /usr/local/lib/node_modules/npm/bin/node-gyp-bin:/home/yeison/Dropbox/JavaScript/Proyectos/udla/udla-admin/node_modules/.bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/home/yeison/android-sdk-linux/:/home/yeison/android-sdk-linux/tools/:/home/yeison/android-sdk-linux/platform-tools/:/home/yeison/bin:/usr/local/java/jdk1.7.0_101/bin:/home/yeison/android-sdk-linux//bin
 11 verbose lifecycle udla-backend@0.0.0~start: CWD: /home/yeison/Dropbox/JavaScript/Proyectos/udla/udla-admin
 12 silly lifecycle udla-backend@0.0.0~start: Args: [ '-c', 'node server.js' ]
 13 silly lifecycle udla-backend@0.0.0~start: Returned: code: 8  signal: null

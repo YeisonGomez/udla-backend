@@ -1,7 +1,7 @@
 module.exports = {
 	server 	: {
-		ip 		: '104.236.225.92',
-		//ip: 'localhost',
+		//ip 		: '104.236.225.92',
+		ip: 'localhost',
 		port    : 3200
 	},
 	

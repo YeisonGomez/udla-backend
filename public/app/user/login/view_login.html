@@ -15,6 +15,7 @@
                             <md-icon class="material-icons color-gray">lock</md-icon>
                             <input ng-model="password" type="password">
                         </md-input-container>
+                        <div class="loader" ng-if="loader"></div>
                         <md-button class="md-raised md-primary width-all lowercase" style="width: 244px;" ng-click="login($event)" ng-disabled = "!credentialsValid()">Continuar</md-button>
                     </md-content>
                 </div>

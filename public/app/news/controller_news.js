@@ -1,19 +1,24 @@
-app.controller('newsCtrl', function($scope, $rootScope, $location, $interval, newsService) {
+app.controller('newsCtrl', function($scope, $rootScope, $location, $interval, newsService, Upload) {
     $rootScope.new = {
         subject: "",
         detail: "",
         content: ""
     };
     $scope.init();
+    $scope.message;
 
     $scope.create = function(ev) {
         $rootScope.new.content = JSON.stringify($scope.quill.getContents());
         if (!$scope.loadingContent && $scope.validNew()) {
-            $scope.loadingContent = true;
-            newsService.create($rootScope.new, $rootScope.user_module).then(function(data) {
-                    if($scope.newsTotal == undefined){
+            if ($scope.form.file.$valid && $scope.file || $rootScope.edit) {
+                $scope.loadingContent = true;
+                Upload.upload({
+                    url: api_url + '/new/create',
+                    data: { file: $scope.file, n: $rootScope.new, m: $rootScope.user_module }
+                }).then(function(data) {
+                    if ($scope.newsTotal == undefined) {
                         $scope.newsTotal = data.data.message;
-                    }else{
+                    } else {
                         $scope.newsTotal.push(data.data.message);
                     }
                     $rootScope.new = {
@@ -21,18 +26,29 @@ app.controller('newsCtrl', function($scope, $rootScope, $location, $interval, ne
                         detail: "",
                         content: ""
                     };
+                    $scope.file = undefined;
                     $scope.articleNew();
                     $scope.loadingContent = false;
-                })
-                .catch(function(err) {
+
+                }, function(resp) {
+                    console.log('Error status: ');
+                    console.log(resp);
+                    $scope.loadingContent = false;
+                    $scope.showAlert(ev, "Lo sentimos", "La conexión con el servidor falló");
+                }, function(evt) {
+                    var progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
+                    console.log('progress: ' + progressPercentage + '% ' + evt.config.data.file.name);
+                }).catch(function(err) {
                     $scope.loadingContent = false;
                     $scope.showAlert(ev, "Lo sentimos", "La conexión con el servidor falló");
                 });
+            } else {
+                $scope.showAlert(ev, "Lo sentimos", "Por favor suba una imagen de portada");
+            }
         } else {
-              
-            if($rootScope.new.subject.length()<=50){
+            if ($rootScope.new.subject.length >= 80 || $rootScope.new.detail.length >= 200) {
                 $scope.showAlert(ev, "Lo sentimos", "El título es demasiado largo para ser publicado.");
-            }else{
+            } else {
                 $scope.showAlert(ev, "Lo sentimos", "El articulo es demasiado corto para ser publicado o no tiene contenido");
             }
         }
@@ -50,14 +66,26 @@ app.controller('newsCtrl', function($scope, $rootScope, $location, $interval, ne
                 .catch(function(err) {
                     $scope.loadingContent = false;
                     $scope.showAlert(ev, "Lo sentimos", "La conexión con el servidor fallo");
-                    $rootScope.edit = false;
                 });
         });
 
     }
 
-    $scope.validNew = function() {
-        return $rootScope.new.subject.length > 3 && $rootScope.new.detail.length > 4 && $rootScope.new.content.length > 5;
+    $scope.update = function(ev) {
+        $rootScope.new.content = JSON.stringify($scope.quill.getContents());
+        $scope.loadingContent = true;
+        newsService.update($rootScope.new).then(function(data) {
+                console.log(data.data);
+                $scope.loadingContent = false;
+            })
+            .catch(function(err) {
+                $scope.loadingContent = false;
+                $scope.showAlert(ev, "Lo sentimos", "La conexión con el servidor falló");
+            });
     }
-    
-  });
+
+    $scope.validNew = function() {
+        return ($rootScope.new.subject.length > 3 && $rootScope.new.subject.length <= 80 && $rootScope.new.detail.length > 4 && $rootScope.new.detail.length <= 200 && $rootScope.new.content.length > 5);
+    }
+
+});

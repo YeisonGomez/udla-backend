@@ -3,10 +3,10 @@
 var api_url = "http://104.236.225.92:3200";
 //var api_url = "http://localhost:3200";
 
-var app = angular.module('udla', ['ngRoute', 'route-segment', 'view-segment', 'ngMaterial', 'satellizer']);
+var app = angular.module('udla', ['ngRoute', 'route-segment', 'view-segment', 'ngMaterial', 'satellizer', 'ngQuill', 'ngFileUpload']);
 
-app.config(['$routeSegmentProvider', '$routeProvider', '$mdThemingProvider', '$authProvider',
-    function($routeSegmentProvider, $routeProvider, $mdThemingProvider, $authProvider) {
+app.config(['$routeSegmentProvider', '$routeProvider', '$mdThemingProvider', '$authProvider', 'ngQuillConfigProvider',
+    function($routeSegmentProvider, $routeProvider, $mdThemingProvider, $authProvider, ngQuillConfigProvider) {
         $authProvider.loginUrl = api_url + '/login';
         $authProvider.tokenName = 'token';
         $authProvider.tokenPrefix = '';
